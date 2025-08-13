@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Shippori+Mincho:wght@400;700&display=swap');
+
+:root {
+  --color-primary-dark: #1A2B4C; /* 深い藍色 */
+  --color-accent-gold: #FFD700; /* 柔らかなゴールド */
+  --color-accent-lavender: #9370DB; /* 落ち着いたラベンダー */
+  --color-sub-gray: #F0F0F0; /* 温かみのあるグレー */
+  --color-text-light: #FFFFFF;
+  --color-text-dark: #333333;
+}
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, #3A4F7A 100%);
+  color: var(--color-text-light);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Shippori Mincho', serif;
+  color: var(--color-accent-gold);
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-text-light);
+}
+
+.form-label {
+  color: var(--color-text-light);
+}
+
+.btn-primary {
+  background-color: var(--color-accent-gold);
+  border-color: var(--color-accent-gold);
+  color: var(--color-primary-dark);
+}
+
+.btn-primary:hover {
+  background-color: #E6C200;
+  border-color: #E6C200;
+}
+
+.alert-danger {
+  background-color: rgba(255, 0, 0, 0.2);
+  border-color: rgba(255, 0, 0, 0.3);
+  color: var(--color-text-light);
+}
+
+.spinner-border {
+  color: var(--color-accent-gold) !important;
+}
+
+.card-body.bg-light {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}

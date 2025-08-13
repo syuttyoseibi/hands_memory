@@ -50,29 +50,30 @@ export default function HomePage() {
 
   return (
     <div className="container mt-5">
-      <h1 className="text-center mb-4">AI手相占い</h1>
-      <div className="card p-4 shadow-sm">
+      <h1 className="text-center mb-4 display-4">ルナパーム</h1>
+      <p className="text-center mb-5 lead">あなたの運命の扉を開く</p>
+      <div className="card p-4 shadow-lg">
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="palmImage" className="form-label">
-              手のひらの画像をアップロードしてください
+          <div className="mb-4 text-center">
+            <label htmlFor="palmImage" className="form-label fs-5 mb-3">
+              <i className="bi bi-hand-index-fill me-2"></i>手のひらをかざして、未来を読み解きましょう
             </label>
             <input
-              className="form-control"
+              className="form-control form-control-lg"
               type="file"
               id="palmImage"
               accept="image/*"
               onChange={handleFileChange}
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100" disabled={loading}>
+          <button type="submit" className="btn btn-primary btn-lg w-100" disabled={loading}>
             {loading ? (
               <>
                 <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                占いの準備中...
+                <span className="text-white">星々があなたの手相を読み解いています...</span>
               </>
             ) : (
-              '占う'
+              '<i className="bi bi-stars me-2"></i>占う'
             )}
           </button>
         </form>
@@ -84,10 +85,10 @@ export default function HomePage() {
         )}
 
         {palmReadingResult && (
-          <div className="mt-4">
-            <h3>鑑定結果:</h3>
-            <div className="card card-body bg-light">
-              <p style={{ whiteSpace: 'pre-wrap' }}>{palmReadingResult}</p>
+          <div className="mt-5">
+            <h3 className="text-center mb-3">鑑定結果:</h3>
+            <div className="card card-body bg-light p-4">
+              <p className="lead" style={{ whiteSpace: 'pre-wrap' }}>{palmReadingResult}</p>
             </div>
           </div>
         )}
