@@ -49,9 +49,10 @@ export default function HomePage() {
   };
 
   return (
-    <div className="container mt-5">
-      <h1 className="text-center mb-4 display-4">ルナパーム</h1>
-      <p className="text-center mb-5 lead">あなたの運命の扉を開く</p>
+    <div className="container mt-5 fade-in">
+      <h1 className="text-center mb-4 display-4">星読み手相</h1>
+      <p className="text-center mb-3 lead">あなたの運命の扉を開く</p>
+      <p className="text-center mb-5"><Link href="/about" className="text-decoration-none" style={{ color: 'var(--color-accent-lavender)' }}>星読み手相について</Link></p>
       <div className="card p-4 shadow-lg">
         <form onSubmit={handleSubmit}>
           <div className="mb-4 text-center">
@@ -73,7 +74,9 @@ export default function HomePage() {
                 <span className="text-white">星々があなたの手相を読み解いています...</span>
               </>
             ) : (
-              '<i className="bi bi-stars me-2"></i>占う'
+              <span className="d-flex justify-content-center align-items-center">
+                <i className="bi bi-stars me-2"></i>占う
+              </span>
             )}
           </button>
         </form>
@@ -85,7 +88,7 @@ export default function HomePage() {
         )}
 
         {palmReadingResult && (
-          <div className="mt-5">
+          <div className="mt-5 slide-up">
             <h3 className="text-center mb-3">鑑定結果:</h3>
             <div className="card card-body bg-light p-4">
               <p className="lead" style={{ whiteSpace: 'pre-wrap' }}>{palmReadingResult}</p>

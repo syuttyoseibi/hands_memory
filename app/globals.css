@@ -47,6 +47,8 @@ h6 {
 .btn-primary:hover {
   background-color: #E6C200;
   border-color: #E6C200;
+  transform: scale(1.02);
+  transition: all 0.2s ease-in-out;
 }
 
 .alert-danger {
@@ -62,4 +64,35 @@ h6 {
 .card-body.bg-light {
   background-color: rgba(255, 255, 255, 0.05) !important;
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
