@@ -49,6 +49,33 @@ export default function HomePage() {
     }
   };
 
+  const handleShare = async () => {
+    const shareText = `星読み手相の鑑定結果：\n${palmReadingResult}\n\nあなたも試してみませんか？\n${window.location.href}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: '星読み手相 鑑定結果',
+          text: shareText,
+          url: window.location.href,
+        });
+        console.log('シェアに成功しました');
+      } catch (error) {
+        console.error('シェアに失敗しました:', error);
+      }
+    } else {
+      // Web Share APIが利用できない場合、クリップボードにコピー
+      try {
+        await navigator.clipboard.writeText(shareText);
+        alert('鑑定結果をクリップボードにコピーしました！SNSなどに貼り付けてシェアしてください。');
+        console.log('クリップボードにコピーしました');
+      } catch (error) {
+        console.error('クリップボードへのコピーに失敗しました:', error);
+        alert('鑑定結果のコピーに失敗しました。');
+      }
+    }
+  };
+
   return (
     <div className="container mt-5 fade-in">
       <h1 className="text-center mb-4 display-4">星読み手相</h1>
@@ -116,6 +143,9 @@ export default function HomePage() {
             <h3 className="text-center mb-3">鑑定結果:</h3>
             <div className="card card-body bg-light p-4">
               <p className="lead" style={{ whiteSpace: 'pre-wrap' }}>{palmReadingResult}</p>
+              <button onClick={handleShare} className="btn btn-success mt-3">
+                <i className="bi bi-share-fill me-2"></i>結果をシェアする
+              </button>
             </div>
           </div>
         )}
