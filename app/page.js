@@ -50,17 +50,7 @@ export default function HomePage() {
   };
 
   const handleShare = async () => {
-    const MAX_PALM_READING_LENGTH = 180; // 占い結果の最大文字数（調整可能）
-    let displayPalmReading = palmReadingResult;
-
-    if (palmReadingResult.length > MAX_PALM_READING_LENGTH) {
-      displayPalmReading = palmReadingResult.substring(0, MAX_PALM_READING_LENGTH) + '...';
-    }
-
-    const appInductionText = `\n\nあなたも星読み手相を試してみませんか？`;
-    const shareUrl = window.location.href;
-
-    const shareText = `星読み手相の鑑定結果：\n${displayPalmReading}${appInductionText}\n${shareUrl}`;
+    const shareText = `星読み手相の鑑定結果：\n${palmReadingResult}\n\nあなたも試してみませんか？\n${window.location.href}`;
 
     if (navigator.share) {
       try {
