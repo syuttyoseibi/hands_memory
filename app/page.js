@@ -57,16 +57,39 @@ export default function HomePage() {
       <div className="card p-4 shadow-lg">
         <form onSubmit={handleSubmit}>
           <div className="mb-4 text-center">
-            <label htmlFor="palmImage" className="form-label fs-5 mb-3">
-              <i className="bi bi-hand-index-fill me-2"></i>手のひらをかざして、未来を読み解きましょう
-            </label>
-            <input
-              className="form-control form-control-lg"
-              type="file"
-              id="palmImage"
-              accept="image/*"
-              onChange={handleFileChange}
-            />
+            <p className="fs-5 mb-3">
+                <i className="bi bi-hand-index-fill me-2"></i>
+                あなたの手のひらの写真をアップロードするか、カメラで撮影してください。
+            </p>
+            <div className="d-grid gap-2 d-md-flex justify-content-md-center">
+                <label htmlFor="palmImage" className="btn btn-light btn-lg mb-3">
+                    <i className="bi bi-image me-2"></i>写真を選択
+                </label>
+                <input
+                    className="d-none"
+                    type="file"
+                    id="palmImage"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                />
+                <label htmlFor="cameraImage" className="btn btn-light btn-lg mb-3">
+                    <i className="bi bi-camera me-2"></i>カメラで撮影
+                </label>
+                <input
+                    className="d-none"
+                    type="file"
+                    id="cameraImage"
+                    accept="image/*"
+                    capture="camera"
+                    onChange={handleFileChange}
+                />
+            </div>
+            {selectedFile && (
+                <div className="mt-3">
+                    <p>選択されたファイル: {selectedFile.name}</p>
+                    <img src={URL.createObjectURL(selectedFile)} alt="Selected palm" className="img-fluid rounded" style={{ maxHeight: '200px' }} />
+                </div>
+            )}
           </div>
           <button type="submit" className="btn btn-primary btn-lg w-100" disabled={loading}>
             {loading ? (
