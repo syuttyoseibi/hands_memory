@@ -1,17 +1,36 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function HomePage() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [palmReadingResult, setPalmReadingResult] = useState('');
+  const [displayedResult, setDisplayedResult] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [appraisalType, setAppraisalType] = useState('shikkari'); // 'shikkari' or 'simple'
+
+  useEffect(() => {
+    if (palmReadingResult) {
+      setDisplayedResult('');
+      let i = 0;
+      const typingInterval = setInterval(() => {
+        if (i < palmReadingResult.length) {
+          setDisplayedResult(prev => prev + palmReadingResult.charAt(i));
+          i++;
+        } else {
+          clearInterval(typingInterval);
+        }
+      }, 50); // 50ms per character
+      return () => clearInterval(typingInterval);
+    }
+  }, [palmReadingResult]);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
     setPalmReadingResult('');
+    setDisplayedResult('');
     setError('');
   };
 
@@ -24,10 +43,12 @@ export default function HomePage() {
 
     setLoading(true);
     setPalmReadingResult('');
+    setDisplayedResult('');
     setError('');
 
     const formData = new FormData();
     formData.append('image', selectedFile);
+    formData.append('appraisalType', appraisalType);
 
     try {
       const response = await fetch('/api/palm-reading', {
@@ -64,7 +85,6 @@ export default function HomePage() {
         console.error('シェアに失敗しました:', error);
       }
     } else {
-      // Web Share APIが利用できない場合、クリップボードにコピー
       try {
         await navigator.clipboard.writeText(shareText);
         alert('鑑定結果をクリップボードにコピーしました！SNSなどに貼り付けてシェアしてください。');
@@ -86,7 +106,7 @@ export default function HomePage() {
           <div className="mb-4 text-center">
             <p className="fs-5 mb-3">
                 <i className="bi bi-hand-index-fill me-2"></i>
-                あなたの手のひらの写真をアップロードするか、カメラで撮影してください。
+                あなたの手のひらの写真をアップロードしてください。
             </p>
             <div className="d-grid gap-2 d-md-flex justify-content-md-center">
                 <label htmlFor="palmImage" className="btn btn-light btn-lg mb-3">
@@ -118,6 +138,18 @@ export default function HomePage() {
                 </div>
             )}
           </div>
+
+          <div className="mb-4 text-center">
+            <p className="fs-5 mb-3">鑑定タイプを選択してください。</p>
+            <div className="btn-group" role="group" aria-label="Appraisal type">
+              <input type="radio" className="btn-check" name="appraisalType" id="shikkari" autoComplete="off" checked={appraisalType === 'shikkari'} onChange={() => setAppraisalType('shikkari')} />
+              <label className="btn btn-outline-primary" htmlFor="shikkari">しっかり鑑定</label>
+
+              <input type="radio" className="btn-check" name="appraisalType" id="simple" autoComplete="off" checked={appraisalType === 'simple'} onChange={() => setAppraisalType('simple')} />
+              <label className="btn btn-outline-primary" htmlFor="simple">シンプル鑑定</label>
+            </div>
+          </div>
+
           <button type="submit" className="btn btn-primary btn-lg w-100" disabled={loading}>
             {loading ? (
               <>
@@ -138,14 +170,19 @@ export default function HomePage() {
           </div>
         )}
 
-        {palmReadingResult && (
+        {displayedResult && (
           <div className="mt-5 slide-up">
             <h3 className="text-center mb-3">鑑定結果:</h3>
             <div className="card card-body bg-light p-4">
-              <p className="lead" style={{ whiteSpace: 'pre-wrap' }}>{palmReadingResult}</p>
-              <button onClick={handleShare} className="btn btn-success mt-3">
-                <i className="bi bi-share-fill me-2"></i>結果をシェアする
-              </button>
+              <p className="lead" style={{ whiteSpace: 'pre-wrap' }}>
+                {displayedResult}
+                <span className="typing-cursor"></span>
+              </p>
+              {displayedResult.length === palmReadingResult.length && (
+                <button onClick={handleShare} className="btn btn-success mt-3">
+                  <i className="bi bi-share-fill me-2"></i>結果をシェアする
+                </button>
+              )}
             </div>
           </div>
         )}
