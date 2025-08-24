@@ -34,6 +34,15 @@ export default function HomePage() {
     }
   }, [palmReadingResult]);
 
+  // Debugging useEffect
+  useEffect(() => {
+    console.log('palmReadingResult:', palmReadingResult);
+    console.log('displayedResult:', displayedResult);
+    if (palmReadingResult) {
+        console.log('Condition for buttons:', displayedResult.length === palmReadingResult.length && palmReadingResult.length > 0);
+    }
+  }, [palmReadingResult, displayedResult]);
+
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
     setPalmReadingResult('');
@@ -187,7 +196,7 @@ export default function HomePage() {
                 {displayedResult}
                 <span className="typing-cursor"></span>
               </p>
-              {displayedResult.length === palmReadingResult.length && (
+              {displayedResult.length === palmReadingResult.length && palmReadingResult.length > 0 && (
                 <div className="d-flex justify-content-center gap-2 mt-3">
                   <button onClick={handleCopy} className="btn btn-info">
                     <i className="bi bi-clipboard-check-fill me-2"></i>結果をコピー
