@@ -87,7 +87,8 @@ export default function HomePage() {
   };
 
   const handleCopy = async () => {
-    const textToCopy = `星読み手相の鑑定結果：\n${palmReadingResult}`;
+    const textToCopy = `星読み手相の鑑定結果：
+${palmReadingResult}`;
     try {
       await navigator.clipboard.writeText(textToCopy);
       alert('鑑定結果をクリップボードにコピーしました！');
@@ -98,7 +99,11 @@ export default function HomePage() {
   };
 
   const handleShare = async () => {
-    const shareText = `星読み手相の鑑定結果：\n${palmReadingResult}\n\nあなたも試してみませんか？\n${window.location.href}`;
+    const shareText = `星読み手相の鑑定結果：
+${palmReadingResult}
+
+あなたも試してみませんか？
+${window.location.href}`;
     if (navigator.share) {
       try {
         await navigator.share({
