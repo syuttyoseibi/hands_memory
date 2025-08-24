@@ -10,6 +10,13 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [appraisalType, setAppraisalType] = useState('shikkari'); // 'shikkari' or 'simple'
+  const [isShareSupported, setIsShareSupported] = useState(false);
+
+  useEffect(() => {
+    if (typeof navigator.share !== 'undefined') {
+      setIsShareSupported(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (palmReadingResult) {
@@ -70,9 +77,19 @@ export default function HomePage() {
     }
   };
 
+  const handleCopy = async () => {
+    const textToCopy = `星読み手相の鑑定結果：\n${palmReadingResult}`;
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      alert('鑑定結果をクリップボードにコピーしました！');
+    } catch (error) {
+      console.error('クリップボードへのコピーに失敗しました:', error);
+      alert('鑑定結果のコピーに失敗しました。');
+    }
+  };
+
   const handleShare = async () => {
     const shareText = `星読み手相の鑑定結果：\n${palmReadingResult}\n\nあなたも試してみませんか？\n${window.location.href}`;
-
     if (navigator.share) {
       try {
         await navigator.share({
@@ -80,19 +97,11 @@ export default function HomePage() {
           text: shareText,
           url: window.location.href,
         });
-        console.log('シェアに成功しました');
       } catch (error) {
         console.error('シェアに失敗しました:', error);
       }
     } else {
-      try {
-        await navigator.clipboard.writeText(shareText);
-        alert('鑑定結果をクリップボードにコピーしました！SNSなどに貼り付けてシェアしてください。');
-        console.log('クリップボードにコピーしました');
-      } catch (error) {
-        console.error('クリップボードへのコピーに失敗しました:', error);
-        alert('鑑定結果のコピーに失敗しました。');
-      }
+      alert('お使いのブラウザはWeb共有に対応していません。コピー機能をご利用ください。');
     }
   };
 
@@ -179,9 +188,14 @@ export default function HomePage() {
                 <span className="typing-cursor"></span>
               </p>
               {displayedResult.length === palmReadingResult.length && (
-                <button onClick={handleShare} className="btn btn-success mt-3">
-                  <i className="bi bi-share-fill me-2"></i>結果をシェアする
-                </button>
+                <div className="d-flex justify-content-center gap-2 mt-3">
+                  <button onClick={handleCopy} className="btn btn-info">
+                    <i className="bi bi-clipboard-check-fill me-2"></i>結果をコピー
+                  </button>
+                  <button onClick={handleShare} className="btn btn-success" disabled={!isShareSupported}>
+                    <i className="bi bi-share-fill me-2"></i>結果をシェア
+                  </button>
+                </div>
               )}
             </div>
           </div>
