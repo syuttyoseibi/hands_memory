@@ -11,6 +11,7 @@ export default function HomePage() {
   const [error, setError] = useState('');
   const [appraisalType, setAppraisalType] = useState('shikkari'); // 'shikkari' or 'simple'
   const [isShareSupported, setIsShareSupported] = useState(false);
+  const [typingComplete, setTypingComplete] = useState(false);
 
   useEffect(() => {
     if (typeof navigator.share !== 'undefined') {
@@ -21,6 +22,7 @@ export default function HomePage() {
   useEffect(() => {
     if (palmReadingResult) {
       setDisplayedResult('');
+      setTypingComplete(false);
       let i = 0;
       const typingInterval = setInterval(() => {
         if (i < palmReadingResult.length) {
@@ -28,6 +30,7 @@ export default function HomePage() {
           i++;
         } else {
           clearInterval(typingInterval);
+          setTypingComplete(true);
         }
       }, 50); // 50ms per character
       return () => clearInterval(typingInterval);
@@ -48,6 +51,7 @@ export default function HomePage() {
     setPalmReadingResult('');
     setDisplayedResult('');
     setError('');
+    setTypingComplete(false);
   };
 
   const handleSubmit = async (event) => {
@@ -61,6 +65,7 @@ export default function HomePage() {
     setPalmReadingResult('');
     setDisplayedResult('');
     setError('');
+    setTypingComplete(false);
 
     const formData = new FormData();
     formData.append('image', selectedFile);
@@ -199,9 +204,9 @@ ${window.location.href}`;
             <div className="card card-body bg-light p-4">
               <p className="lead" style={{ whiteSpace: 'pre-wrap' }}>
                 {displayedResult}
-                <span className="typing-cursor"></span>
+                {!typingComplete && <span className="typing-cursor"></span>}
               </p>
-              {displayedResult.length === palmReadingResult.length && palmReadingResult.length > 0 && (
+              {typingComplete && (
                 <div className="d-flex justify-content-center gap-2 mt-3">
                   <button onClick={handleCopy} className="btn btn-info">
                     <i className="bi bi-clipboard-check-fill me-2"></i>結果をコピー
